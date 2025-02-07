@@ -47,6 +47,9 @@ export class User {
     @Column({ default: true })
     IsActive: boolean;
 
+    @Column({ nullable: false })
+    Role: number;
+
     @CreateDateColumn({ default: () => 'GETDATE()' })
     CreatedAt: Date;
 

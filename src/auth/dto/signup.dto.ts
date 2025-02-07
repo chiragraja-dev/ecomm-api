@@ -18,6 +18,24 @@ export class SignUpDto {
     @IsNotEmpty()
     @MinLength(8)
     password: string;
+
+    @ApiProperty({ example: 1 })
+    @IsNotEmpty()
+    role: number
 }
 
+export class LoginDto {
+    @ApiProperty({ example: 'chirag@admin.com' })
+    @IsEmail()
+    email: string;
+
+    @ApiProperty({ example: 'Password@1' })
+    @IsNotEmpty()
+    @MinLength(8)
+    password: string;
+
+    @ApiProperty({ example: 1 })
+    @IsNotEmpty()
+    role: number;
+}
 

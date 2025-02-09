@@ -10,6 +10,10 @@ import { databaseConfig } from './database/database.config';
 import { ProfileController } from './profile/profile.controller';
 import { ProfileService } from './profile/profile.service';
 import { ProfileModule } from './profile/profile.module';
+import { ProductService } from './product/product.service';
+import { ProductController } from './product/product.controller';
+import { ProductModule } from './product/product.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
 
@@ -17,9 +21,11 @@ import { ProfileModule } from './profile/profile.module';
     TypeOrmModule.forRoot(databaseConfig()),
     DatabaseModule,
     AuthModule,
-    ProfileModule
+    ProfileModule,
+    ProductModule,
+    CategoriesModule
   ],
-  controllers: [AppController, DatabaseController, AuthController, ProfileController],
-  providers: [AppService, ProfileService],
+  controllers: [AppController, DatabaseController, AuthController, ProfileController, ProductController],
+  providers: [AppService, ProfileService, ProductService],
 })
 export class AppModule { }

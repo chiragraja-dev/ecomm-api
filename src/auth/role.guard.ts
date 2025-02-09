@@ -9,10 +9,8 @@ export interface RequestWithUser extends Request {
 @Injectable()
 export class RoleGuard implements CanActivate {
     constructor(private reflector: Reflector) { }
-
     canActivate(context: ExecutionContext): boolean {
         const requiredRole = this.reflector.get<number>('role', context.getHandler())
-
         if (!requiredRole) return true;
         const request = context.switchToHttp().getRequest<RequestWithUser>();
         const user = request.user;

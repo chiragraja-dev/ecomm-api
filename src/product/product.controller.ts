@@ -1,10 +1,11 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Put, Param } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductDto } from './dto/product.dto';
+import { ProductDto, UpdateProductDto } from './dto/product.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Role } from 'src/auth/auth.controller';
 import { AuthGuard } from '@nestjs/passport';
+import { Product } from './entity/product.entity';
 
 @ApiTags('Products')
 @Controller('products')
@@ -20,4 +21,18 @@ export class ProductController {
     async addProduct(@Body() productDto: ProductDto) {
         return this.productService.addProduct(productDto);
     }
+
+    @Get('get')
+    async getAllProduct(): Promise<{ message: string, data: Product[] }> {
+        return this.productService.getAllProduct()
+    }
+
+    @Put('update')
+    @Role([1])
+    @UseGuards(AuthGuard('jwt'), RoleGuard)
+    async updateProduct(@Param('id') id: number, @Body() productDto: UpdateProductDto): Promise<{ message: string, data: Product }> {
+        return this.productService.updateProduct(id, productDto)
+    }
+
+
 }

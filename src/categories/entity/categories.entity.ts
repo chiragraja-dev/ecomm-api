@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Product } from 'src/product/entity/product.entity';
 
 @Entity('categories')
 export class Category {
@@ -26,4 +27,7 @@ export class Category {
     @ApiProperty({ example: '2024-02-13T12:30:00Z', description: 'The date when the category was last updated' })
     @UpdateDateColumn({ type: 'datetime', default: () => 'GETDATE()', onUpdate: 'GETDATE()' })
     updated_at: Date;
+
+    @ManyToMany(() => Product, product => product.categories)
+    products: Product[];
 }

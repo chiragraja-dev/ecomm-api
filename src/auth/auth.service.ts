@@ -41,7 +41,13 @@ export class AuthService {
         if (!isPasswordMatch) {
             throw new UnauthorizedException('Password is not matching')
         }
-        const token = this.jwtService.sign({ UserID: userExist.UserID, Email: userExist.Email, Role: userExist.Role });
+        const token = this.jwtService.sign({
+            UserID: userExist.UserID,
+            Email: userExist.Email,
+            Role: userExist.Role,
+        }, {
+            expiresIn: '1h'
+        });
         return {
             token: token,
             email: userExist.Email,

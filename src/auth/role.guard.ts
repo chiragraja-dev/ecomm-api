@@ -15,8 +15,8 @@ export class RoleGuard implements CanActivate {
         private readonly jwtService: JwtService
     ) { }
     canActivate(context: ExecutionContext): boolean {
-        const requiredRole = this.reflector.get<number>('role', context.getHandler())
-        if (!requiredRole) return true;
+        const requiredRole = this.reflector.get<number[]>('role', context.getHandler())
+        if (requiredRole.length < 0) return true;
         const request = context.switchToHttp().getRequest<RequestWithUser>();
         const user = request.user;
         const authHeader = request.headers.authorization;
@@ -27,10 +27,9 @@ export class RoleGuard implements CanActivate {
         try {
             const decoded = this.jwtService.verify(authHeader?.split(' ')[1], { secret: 'loremipsumhellowo@00000155628bhgdgfghjkaudgafbgwdyuf' })
             console.log("Decoded Token:", decoded);
-            if (!decoded || decoded.Role !== requiredRole) {
+            if (!decoded || !requiredRole.includes(decoded.Role)) {
                 throw new ForbiddenException(`You do not have permission. Your role: ${decoded?.Role}, Required role: ${requiredRole}`);
             }
-
             return true;
         } catch (error) {
             console.log(error.message)

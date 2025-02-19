@@ -12,7 +12,7 @@ export class ProductController {
     constructor(private readonly productService: ProductService) { }
 
     @Post('add')
-    @Role(1)
+    @Role([1])
     @UseGuards(AuthGuard('jwt'), RoleGuard)
     @ApiOperation({ summary: 'Add a new product' })
     @ApiResponse({ status: 201, description: 'Product added successfully' })

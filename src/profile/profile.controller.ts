@@ -33,7 +33,7 @@ export class ProfileController {
     }
 
     @Put('activate')
-    @Role(1)
+    @Role([1])
     @UseGuards(AuthGuard('jwt'), RoleGuard)
     @ApiResponse({ status: 200, description: 'Users Activate successfully.' })
     @ApiResponse({ status: 401, description: 'Unauthorized.' })

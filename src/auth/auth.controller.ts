@@ -6,7 +6,7 @@ import { User } from './entity/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from './role.guard';
 
-export const Role = (role: number) => SetMetadata('role', role);
+export const Role = (role: number[]) => SetMetadata('role', role);
 @ApiTags('auth')
 @ApiBearerAuth()
 @Controller('auth')
@@ -29,7 +29,7 @@ export class AuthController {
 
 
     @Get('get-user')
-    @Role(1)
+    @Role([1])
     @UseGuards(AuthGuard('jwt'), RoleGuard)
     @ApiResponse({ status: 200, description: 'Users retrieved successfully.', type: User, isArray: true })
     @ApiResponse({ status: 401, description: 'Unauthorized.' })

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './entity/categories.entity';
@@ -23,7 +23,7 @@ export class CategoriesService {
     async getCategoryById(id: number): Promise<Category> {
         const category = await this.categoryRepository.findOne({ where: { category_id: id } });
         if (!category) {
-            throw new Error('Category not found');
+            throw new BadRequestException('Category not found');
         }
         return category
     }
@@ -32,16 +32,15 @@ export class CategoriesService {
 
         const result = await this.categoryRepository.delete(id)
         if (result.affected === 0) {
-            throw new Error('Category not found');
+            throw new BadRequestException('Category not found');
         }
         return { message: "deleted successfully" }
     }
 
     async updateCategory(id: number, updateData: UpdateCategoryDto): Promise<Category[]> {
         const category = await this.categoryRepository.find({ where: { category_id: id } })
-        console.log(category)
         if (!category) {
-            throw new Error('Category not found');
+            throw new BadRequestException('Category not found');
         }
         if (updateData.name !== undefined) {
             category[0].name = updateData.name

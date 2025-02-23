@@ -1,7 +1,7 @@
-import { Controller, Post, Body, UseGuards, Get, Put, Param } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Put, Param, Delete, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto, UpdateProductDto } from './dto/product.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Role } from 'src/auth/auth.controller';
 import { AuthGuard } from '@nestjs/passport';
@@ -23,8 +23,30 @@ export class ProductController {
     }
 
     @Get('get')
-    async getAllProduct(): Promise<{ message: string, data: Product[] }> {
-        return this.productService.getAllProduct()
+    @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+    @ApiQuery({ name: 'limit', required: false, type: Number, example: 10 })
+    @ApiQuery({ name: 'sortBy', required: false, type: String, example: 'name' })
+    @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], example: 'ASC' })
+    async getAllProduct(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('sortBy') sortBy?: string,  // <-- Optional with `?`
+        @Query('sortOrder') sortOrder?: 'ASC' | 'DESC', // <-- Optional with `?`
+    ): Promise<{ message: string, data: Product[], total: number, currentPage: number, totalPages: number }> {
+        const { data, total } = await this.productService.getAllProduct(
+            page,
+            limit,
+            sortBy || 'name',
+            sortOrder || 'ASC',
+        );
+        const totalPages = Math.ceil(total / limit);
+        return {
+            message: 'Products retrieved successfully',
+            data,
+            total,
+            currentPage: page,
+            totalPages,
+        };
     }
 
     @Put('update')
@@ -34,5 +56,12 @@ export class ProductController {
         return this.productService.updateProduct(id, productDto)
     }
 
-
+    @Get('get/:id')
+    async getProductById(@Param('id') id: number): Promise<{ message: string, data: Product | {} }> {
+        return this.productService.getProductById(id)
+    }
+    @Delete('delete/:id')
+    async deletePrduct(@Param('id') id: number): Promise<{ message: string }> {
+        return this.productService.deleteProduct(id)
+    }
 }

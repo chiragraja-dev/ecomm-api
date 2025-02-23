@@ -18,6 +18,9 @@ import { CategoriesService } from './categories/categories.service';
 import { CategoriesController } from './categories/categories.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { RoleGuard } from './auth/role.guard';
+import { ProductCategoryController } from './product-category/product-category.controller';
+import { ProductCategoryService } from './product-category/product-category.service';
+import { ProductCategoryModule } from './product-category/product-category.module';
 
 @Module({
   imports: [
@@ -27,7 +30,8 @@ import { RoleGuard } from './auth/role.guard';
     AuthModule,
     ProfileModule,
     ProductModule,
-    CategoriesModule
+    CategoriesModule,
+    ProductCategoryModule
   ],
   controllers: [
     AppController,
@@ -35,12 +39,14 @@ import { RoleGuard } from './auth/role.guard';
     AuthController,
     ProfileController,
     ProductController,
-    CategoriesController
+    CategoriesController,
+    ProductCategoryController
   ],
   providers: [AppService,
     ProfileService,
     ProductService,
     CategoriesService,
-    RoleGuard],
+    RoleGuard,
+    ProductCategoryService],
 })
 export class AppModule { }

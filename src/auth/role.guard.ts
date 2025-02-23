@@ -26,13 +26,11 @@ export class RoleGuard implements CanActivate {
         }
         try {
             const decoded = this.jwtService.verify(authHeader?.split(' ')[1], { secret: 'loremipsumhellowo@00000155628bhgdgfghjkaudgafbgwdyuf' })
-            console.log("Decoded Token:", decoded);
             if (!decoded || !requiredRole.includes(decoded.Role)) {
                 throw new ForbiddenException(`You do not have permission. Your role: ${decoded?.Role}, Required role: ${requiredRole}`);
             }
             return true;
         } catch (error) {
-            console.log(error.message)
             throw new UnauthorizedException('Missing or invalid token', error.message);
         }
 

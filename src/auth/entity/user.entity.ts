@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Inventory } from "src/inventory/enity/inventory.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('userProfile')
 export class User {
@@ -55,4 +56,7 @@ export class User {
 
     @UpdateDateColumn({ default: () => 'GETDATE()' })
     UpdatedAt: Date;
+
+    @OneToMany(() => Inventory, inventory => inventory.user)
+    inventories: Inventory[];
 }

@@ -21,6 +21,9 @@ import { RoleGuard } from './auth/role.guard';
 import { ProductCategoryController } from './product-category/product-category.controller';
 import { ProductCategoryService } from './product-category/product-category.service';
 import { ProductCategoryModule } from './product-category/product-category.module';
+import { InventoryController } from './inventory/inventory.controller';
+import { InventoryService } from './inventory/inventory.service';
+import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
@@ -31,7 +34,8 @@ import { ProductCategoryModule } from './product-category/product-category.modul
     ProfileModule,
     ProductModule,
     CategoriesModule,
-    ProductCategoryModule
+    ProductCategoryModule,
+    InventoryModule
   ],
   controllers: [
     AppController,
@@ -40,13 +44,17 @@ import { ProductCategoryModule } from './product-category/product-category.modul
     ProfileController,
     ProductController,
     CategoriesController,
-    ProductCategoryController
+    ProductCategoryController,
+    InventoryController
   ],
-  providers: [AppService,
+  providers: [
+    AppService,
     ProfileService,
     ProductService,
     CategoriesService,
     RoleGuard,
-    ProductCategoryService],
+    ProductCategoryService,
+    InventoryService
+  ],
 })
 export class AppModule { }

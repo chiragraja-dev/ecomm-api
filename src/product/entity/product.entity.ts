@@ -1,5 +1,6 @@
 import { Category } from 'src/categories/entity/categories.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Inventory } from 'src/inventory/enity/inventory.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 
 @Entity('products')
 export class Product {
@@ -31,6 +32,9 @@ export class Product {
         inverseJoinColumn: { name: 'category_id', referencedColumnName: 'category_id' },
     })
     categories: Category[];
+
+    @OneToMany(() => Inventory, inventory => inventory.user)
+    inventories: Inventory[];
 }
 
 
